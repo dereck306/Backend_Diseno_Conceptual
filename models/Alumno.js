@@ -9,4 +9,4 @@ const alumnoSchema = new mongoose.Schema({
     carrera: String
 });
 
-module.exports = mongoose.model('Alumno', alumnoSchema);
+module.exports = mongoose.model('Alumno', alumnoSchema, 'Alumno');
