@@ -1,17 +1,12 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const connectDB = require('./db');
 
 const app = express();
 const PORT = 3000;
 
 // Conexión a MongoDB
-mongoose.connect('mongodb://localhost:27017/LaboratorioClase', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('Conexión a MongoDB exitosa.'))
-.catch(err => console.error(err));
+connectDB();
 
 app.use(bodyParser.json());
 
