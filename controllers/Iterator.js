@@ -1,18 +1,21 @@
-var Iterator = function (list) {
+var IteratorLab = function (list) {
     this.index = 0;
     this.list = list;
 }
 
-Iterator.prototype = {
+IteratorLab.prototype = {
     first: function () {
         this.reset();
         return this.next();
     },
     next: function () {
-        return this.items[this.index++];
+        if (this.hasNext()) {
+            return this.list[this.index++];
+        }
+        return null; 
     },
     hasNext: function () {
-        return this.index <= this.items.length;
+        return this.index < this.list.length;
     },
     reset: function () {
         this.index = 0;
@@ -23,3 +26,7 @@ Iterator.prototype = {
         }
     }
 }
+
+
+module.exports = IteratorLab;
+

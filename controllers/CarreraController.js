@@ -1,7 +1,7 @@
 // controllers/CarreraController.js
 
 const Carrera = require('../models/Carrera.js');
-const Iterator = require('./Iterator.js');
+const IteratorLab = require('./Iterator.js');
 
 module.exports = function(app) {
 
@@ -10,11 +10,20 @@ module.exports = function(app) {
         try {
             const carrera = await Carrera.findOne({ codigo: req.params.codigo }, { cursos: 1, _id: 0 });
             if (carrera) {
-                res.send(carrera.cursos);
+                const cursosIterator = new IteratorLab(carrera.cursos);
+
+                const cursos = [];
+                console.log(cursos);
+                cursosIterator.each(course => {
+                    cursos.push(course);
+                });
+
+                res.send(cursos);
             } else {
                 res.status(404).send({ message: "Carrera not found" });
             }
         } catch (err) {
+            console.error(err);
             res.status(500).send(err);
         }
     });
@@ -44,25 +53,7 @@ module.exports = function(app) {
         }
     }); 
 
-    app.get('/carrera/codigo/:codigo/cursos', async (req, res) => {
-        try {
-            const carrera = await Carrera.findOne({ codigo: req.params.codigo }, { cursos: 1, _id: 0 });
-            if (carrera) {
-                const cursosIterator = new Iterator(carrera.cursos);
-
-                const cursos = [];
-                cursosIterator.each(course => {
-                    cursos.push(course);
-                });
-
-                res.send(cursos);
-            } else {
-                res.status(404).send({ message: "Carrera not found" });
-            }
-        } catch (err) {
-            res.status(500).send(err);
-        }
-    });
+   
 
     /*
     POST
