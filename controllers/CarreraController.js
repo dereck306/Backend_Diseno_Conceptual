@@ -5,6 +5,7 @@ const IteratorLab = require('./Iterator.js');
 
 module.exports = function(app) {
 
+    //Iterador
     //http://localhost:3000/carrera/codigo/IT09/cursos
     app.get('/carrera/codigo/:codigo/cursos', async (req, res) => {
         try {
