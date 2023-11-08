@@ -55,5 +55,20 @@ module.exports = function (app) {
         res.status(500).send(err);
     }
     });
+
+    // http://localhost:3000/matricula/historial/0192409325
+    app.get('/matricula/historial/:cedula', async (req, res) => {
+    try {
+        const historialMatriculas = await Matricula.find({ cedula: req.params.cedula });
+        if (historialMatriculas.length > 0) {
+            res.send(historialMatriculas);
+        } else {
+            res.status(404).send({ message: 'No enrollment records found for the student.' });
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
       
 }
