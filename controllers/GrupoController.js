@@ -56,4 +56,22 @@ module.exports = function (app) {
           res.status(500).send(err);
         }
       });
+      
+    //Encontrar Grupos por Curso
+    app.get('/grupo/:cursoSeleccionado', async (req, res) => {
+      const cursoSeleccionado = parseInt(req.params.cursoSeleccionado);
+    
+      try {
+        const grupos = await Grupo.find({ curso: cursoSeleccionado });
+    
+        if (grupos.length === 0) {
+          res.status(404).send({ mensaje: `No hay grupos disponibles para el curso con código ${cursoSeleccionado}` });
+        } else {
+          res.send(grupos);
+        }
+      } catch (err) {
+        res.status(500).send(err);
+      }
+    });
+
 }
