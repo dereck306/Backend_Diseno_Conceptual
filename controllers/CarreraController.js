@@ -117,7 +117,7 @@ module.exports = function(app) {
         const cicloSeleccionado = parseInt(req.param.ciclo);
 
         try {
-            const carrera = await await Carrera.findOne({ codigo: carreraCodigo });
+            const carrera = await Carrera.findOne({ codigo: carreraCodigo });
             
             if(!carrera) {
                 res.status(404).send({ message: "Carrera not found with code ${carreraCodigo}" });
