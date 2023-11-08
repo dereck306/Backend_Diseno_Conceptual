@@ -110,4 +110,26 @@ module.exports = function(app) {
         }
     });
 
+    //Encontrar Cursos por Carrera y Ciclo
+
+    app.get('/carrera/:carreraCodigo/:ciclo'), async (req, res) => {
+        const carreraCodigo = req.param.carreraCodigo;
+        const cicloSeleccionado = parseInt(req.param.ciclo);
+
+        try {
+            const carrera = await await Carrera.findOne({ codigo: carreraCodigo });
+            
+            if(!carrera) {
+                res.status(404).send({ message: "Carrera not found with code ${carreraCodigo}" });
+            } else if (!carrera.cursos) {
+                res.status(404).send({ message: "Carrera with code ${carreraCodigo} does not have Cursos associated" });
+            } else {
+                const cursos = carrera.cursos.filter((curso) => curso.ciclo === cicloSeleccionado);
+                res.json(cursos);
+            }
+        } catch(err) {
+            res.status(500).send(err);
+        }
+    }
+
 }
