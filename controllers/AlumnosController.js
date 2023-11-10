@@ -1,12 +1,36 @@
 const Alumno = require('../models/Alumno.js');
 
 
-module.exports = function(app) {
+module.exports = function (app) {
+
+    /**
+ * Maneja la solicitud GET para obtener una lista de alumnos.
+ *
+ * @param {Object} req - El objeto de solicitud HTTP.
+ * @param {Object} res - El objeto de respuesta HTTP.
+ */
     app.get('/alumnos', async (req, res) => {
         try {
+            // Consulta la base de datos para obtener una lista de alumnos
             const alumnos = await Alumno.find();
-            res.send(alumnos);
+
+            // Crea una instancia de la fábrica PersonaFactory
+            const personaFactory = new PersonaFactory();
+
+            // Convierte los datos de alumnos en objetos Alumno utilizando la fábrica
+            const alumnosObjetos = alumnos.map(alumno => personaFactory.crearAlumno(
+                alumno.cedula,
+                alumno.nombre,
+                alumno.telefono,
+                alumno.email,
+                alumno.fecha_de_nacimiento,
+                alumno.carrera
+            ));
+
+            // Envia la lista de alumnos como respuesta a la solicitud
+            res.send(alumnosObjetos);
         } catch (err) {
+            // En caso de error, responde con un código de estado HTTP 500 (Error interno del servidor)
             res.status(500).send(err);
         }
     });
@@ -40,6 +64,6 @@ module.exports = function(app) {
         } catch (err) {
             res.status(500).send(err);
         }
-});
+    });
 
 }
