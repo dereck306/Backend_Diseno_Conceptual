@@ -3,31 +3,44 @@
 const Carrera = require('../models/Carrera.js');
 const IteratorLab = require('./Iterator.js');
 
-module.exports = function(app) {
+module.exports = function (app) {
 
-    //Iterador
-    //http://localhost:3000/carrera/codigo/IT09/cursos
+
+    /**
+ * Maneja la solicitud GET para obtener la lista de cursos de una carrera específica 
+ * implementando el patron Iterador.
+ * @param {Object} req - El objeto de solicitud HTTP.
+ * @param {Object} res - El objeto de respuesta HTTP.
+ */
     app.get('/carrera/codigo/:codigo/cursos', async (req, res) => {
         try {
+            // Busca la carrera en la base de datos por su código y selecciona solo la lista de cursos
             const carrera = await Carrera.findOne({ codigo: req.params.codigo }, { cursos: 1, _id: 0 });
+
             if (carrera) {
+                // Crea un iterador para recorrer la lista de cursos
                 const cursosIterator = new IteratorLab(carrera.cursos);
 
                 const cursos = [];
-                console.log(cursos);
+
+                // Recorre la lista de cursos utilizando el iterador y agrega cada curso a la lista "cursos"
                 cursosIterator.each(course => {
                     cursos.push(course);
                 });
 
+                // Envía la lista de cursos como respuesta a la solicitud
                 res.send(cursos);
             } else {
+                // Responde con un código de estado HTTP 404 si la carrera no se encuentra
                 res.status(404).send({ message: "Carrera not found" });
             }
         } catch (err) {
             console.error(err);
+            // En caso de error, responde con un código de estado HTTP 500 (Error interno del servidor)
             res.status(500).send(err);
         }
     });
+
 
     //http://localhost:3000/carrera/nombre/Ingeniería en Sistemas Computacionales
     app.get('/carrera/nombre/:nombre', async (req, res) => {
@@ -42,19 +55,19 @@ module.exports = function(app) {
 
     //http://localhost:3000/carrera/codigo/IT09
     app.get('/carrera/codigo/:codigo', async (req, res) => {
-     try {
-          const carrera = await Carrera.findOne({ codigo: req.params.codigo });
-          if (carrera) {
-              res.send(carrera);
-          } else {
+        try {
+            const carrera = await Carrera.findOne({ codigo: req.params.codigo });
+            if (carrera) {
+                res.send(carrera);
+            } else {
                 res.status(404).send({ message: "Carrera not found" });
             }
         } catch (err) {
             res.status(500).send(err);
         }
-    }); 
+    });
 
-   
+
 
     /*
     POST
@@ -65,16 +78,16 @@ module.exports = function(app) {
     "ciclo": 2
     }
     */
-    
+
     app.post('/carrera/codigo/:codigo/agregar-curso', async (req, res) => {
         const { codigo, año, ciclo } = req.body;
-    
+
         try {
             const result = await Carrera.updateOne(
                 { codigo: req.params.codigo },
                 { $push: { cursos: { codigo, año, ciclo } } }
             );
-    
+
             if (result.modifiedCount > 0) {
                 res.send({ message: "Course added successfully to Carrera." });
             } else {
@@ -89,14 +102,14 @@ module.exports = function(app) {
     DELETE
     http://localhost:3000/carrera/codigo/IT01/quitar-curso/7
     */
-    
+
     app.delete('/carrera/codigo/:codigo/quitar-curso/:cursoCodigo', async (req, res) => {
         try {
             const result = await Carrera.updateOne(
                 { codigo: req.params.codigo },
                 { $pull: { cursos: { codigo: req.params.cursoCodigo } } }
             );
-            
+
             // Check if the document was found and modified
             if (result.matchedCount > 0 && result.modifiedCount > 0) {
                 res.send({ message: "Course removed successfully!" });
@@ -118,8 +131,8 @@ module.exports = function(app) {
 
         try {
             const carrera = await Carrera.findOne({ codigo: carreraCodigo });
-            
-            if(!carrera) {
+
+            if (!carrera) {
                 res.status(404).send({ message: "Carrera not found with code ${carreraCodigo}" });
             } else if (!carrera.cursos) {
                 res.status(404).send({ message: "Carrera with code ${carreraCodigo} does not have Cursos associated" });
@@ -127,7 +140,7 @@ module.exports = function(app) {
                 const cursos = carrera.cursos.filter((curso) => curso.ciclo === cicloSeleccionado);
                 res.json(cursos);
             }
-        } catch(err) {
+        } catch (err) {
             res.status(500).send(err);
         }
     }
