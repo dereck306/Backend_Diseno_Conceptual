@@ -2,7 +2,8 @@
 
 const Carrera = require('../models/Carrera.js');
 const IteratorLab = require('./Iterator.js');
-
+// Ruta del archivo que contiene el manejador de eventos
+const { carrerasEmitter, emitCarreraUpdate } = require('./Observer.js'); 
 module.exports = function(app) {
 
     //Iterador
@@ -97,9 +98,14 @@ module.exports = function(app) {
                 { $pull: { cursos: { codigo: req.params.cursoCodigo } } }
             );
             
-            // Check if the document was found and modified
+            // Revisar si el documento fue encontrado o modificado. 
             if (result.matchedCount > 0 && result.modifiedCount > 0) {
+
+            // Se notifica a los observadores de que se ha modificado una carrera
+                emitCarreraUpdate(req.params.codigo);
+
                 res.send({ message: "Course removed successfully!" });
+
             } else if (result.matchedCount > 0 && result.modifiedCount === 0) {
                 res.status(404).send({ message: "Course not found in this Carrera" });
             } else {
