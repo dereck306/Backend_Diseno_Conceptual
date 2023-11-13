@@ -129,8 +129,14 @@ module.exports = function(app) {
         }
     });
 
+    
     //Encontrar Cursos por Carrera y Ciclo
-
+    /*
+    En esta funcion HTTP se puede implementar el patron Iterador
+    A la hora que se filtra la informacion y se consigue los cursos de la carrera seleccionada, se puede llamar al patron iterador
+    debido a que la respuesta de la consulta HTTP devolvera una lista en forma JSON. El iterador pasaria por cada dato dentro de la lista
+    y se podria guardar en una variable en forma de lista.
+     */
     app.get('/carrera/:carreraCodigo/:ciclo'), async (req, res) => {
         const carreraCodigo = req.param.carreraCodigo;
         const cicloSeleccionado = parseInt(req.param.ciclo);

@@ -15,6 +15,12 @@ module.exports = function(app) {
     });
 
     //http://localhost:3000/ciclos/annio/2024
+    /*
+    En esta funcion HTTP se puede implementar el patron Iterador
+    A la hora que se filtra la informacion y se consigue los ciclos del año seleccionado, se puede llamar al patron iterador
+    debido a que la respuesta de la consulta HTTP devolvera una lista en forma JSON. El iterador pasaria por cada dato dentro de la lista
+    y se podria guardar en una variable en forma de lista.
+    */
     app.get('/ciclos/annio/:annio', async (req, res) => {
     try {
         const annio = parseInt(req.params.annio); 
