@@ -57,6 +57,13 @@ module.exports = function (app) {
     });
 
     // http://localhost:3000/matricula/historial/0192409325
+    /*
+    En esta funcion HTTP se puede implementar el patron Iterador
+    A la hora que se filtra la informacion y se consigue los cursos matriculados del estudiante seleccionado, se puede llamar al
+    patron iterador
+    debido a que la respuesta de la consulta HTTP devolvera una lista en forma JSON. El iterador pasaria por cada dato dentro de la lista
+    y se podria guardar en una variable en forma de lista.
+    */
     app.get('/matricula/historial/:cedula', async (req, res) => {
     try {
         const historialMatriculas = await Matricula.find({ cedula: req.params.cedula });
