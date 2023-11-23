@@ -157,4 +157,24 @@ module.exports = function(app) {
         }
     }
 
+    //Eliminar Carrera
+    //DELETE http://localhost:3000/carrera/eliminar/IT09
+    app.delete('/carrera/eliminar/:codigo', async (req, res) => {
+        try {
+            const codigoCarrera = req.params.codigo;
+            const resultado = await Carrera.deleteOne({ codigo: codigoCarrera });
+    
+            if (resultado.deletedCount === 0) {
+                return res.status(404).send({ message: 'Carrera no encontrada.' });
+            }
+    
+            res.status(200).send({ message: 'Carrera eliminada exitosamente.' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ message: 'Error al eliminar la carrera' });
+        }
+    });
+
 }
+
+

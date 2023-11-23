@@ -74,4 +74,22 @@ module.exports = function (app) {
       }
     });
 
+    //GET http://localhost:3000/grupo/12345/estudiantes
+    app.get('/grupo/:grupoId/estudiantes', async (req, res) => {
+      try {
+          const grupoId = req.params.grupoId;
+  
+          const grupo = await Grupo.findById(grupoId).exec();
+  
+          if (!grupo) {
+              return res.status(404).send({ message: 'Grupo no encontrado.' });
+          }
+  
+          res.status(200).send(grupo.estudiantes);
+      } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: 'Error al obtener los estudiantes del grupo' });
+      }
+  });
+
 }
