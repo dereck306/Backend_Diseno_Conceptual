@@ -1,14 +1,14 @@
 // models/Matricula.js
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const cursoSchema = new mongoose.Schema({
-    codigo : String
-})
+  codigo: String,
+});
 
 const matriculaSchema = new mongoose.Schema({
   cedula: String,
-  cursos : [cursoSchema]
+  cursos: [cursoSchema],
 });
 
-module.exports = mongoose.model('Matricula', matriculaSchema, 'Matricula');
+module.exports = mongoose.model("Matricula", matriculaSchema, "Matricula");
