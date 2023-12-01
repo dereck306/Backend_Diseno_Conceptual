@@ -3,7 +3,7 @@
 const mongoose = require("mongoose");
 
 const cursoSchema = new mongoose.Schema({
-  codigo: String,
+  codigo: Number,
 });
 
 const matriculaSchema = new mongoose.Schema({

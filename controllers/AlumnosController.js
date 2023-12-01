@@ -9,7 +9,7 @@ module.exports = function (app) {
  * @param {Object} req - El objeto de solicitud HTTP.
  * @param {Object} res - El objeto de respuesta HTTP.
  */
-    app.get('/alumnos', async (req, res) => {
+    app.get('/alumnos', async (req, res) => {                                   //NO FUNCIONA
         try {
             // Consulta la base de datos para obtener una lista de alumnos
             const alumnos = await Alumno.find();
@@ -46,7 +46,7 @@ module.exports = function (app) {
     });
 
 
-    //http://localhost:3000/alumno/cedula/32004024
+    //http://localhost:3000/alumno/cedula/006-123456-0005F
     app.get('/alumnos/cedula/:cedula', async (req, res) => {
         try {
             const alumnos = await Alumno.find({ cedula: req.params.cedula });

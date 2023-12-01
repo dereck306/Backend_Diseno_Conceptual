@@ -7,12 +7,13 @@ const { carrerasEmitter, emitCarreraUpdate } = require('./Observer.js');
 module.exports = function(app) {
 
 
-    /**
+/**
  * Maneja la solicitud GET para obtener la lista de cursos de una carrera específica 
  * implementando el patron Iterador.
  * @param {Object} req - El objeto de solicitud HTTP.
  * @param {Object} res - El objeto de respuesta HTTP.
  */
+    //http://localhost:3000/carrera/codigo/IT09/cursos
     app.get('/carrera/codigo/:codigo/cursos', async (req, res) => {
         try {
             // Busca la carrera en la base de datos por su código y selecciona solo la lista de cursos
@@ -137,12 +138,13 @@ module.exports = function(app) {
     debido a que la respuesta de la consulta HTTP devolvera una lista en forma JSON. El iterador pasaria por cada dato dentro de la lista
     y se podria guardar en una variable en forma de lista.
      */
-    app.get('/carrera/:carreraCodigo/:ciclo'), async (req, res) => {
+    app.get('/carrera/codigo/:carreraCodigo/ciclo/:ciclo', async (req, res) => {
         const carreraCodigo = req.param.carreraCodigo;
-        const cicloSeleccionado = parseInt(req.param.ciclo);
+        const cicloSeleccionado = parseInt(req.params.ciclo);
 
         try {
-            const carrera = await Carrera.findOne({ codigo: carreraCodigo });
+            const carrera = await Carrera.findOne({ codigo: req.params.carreraCodigo });
+            console.log(carrera);
 
             if (!carrera) {
                 res.status(404).send({ message: "Carrera not found with code ${carreraCodigo}" });
@@ -153,8 +155,8 @@ module.exports = function(app) {
                 res.json(cursos);
             }
         } catch (err) {
-            res.status(500).send(err);
+            res.status(500).send({ message: "No funciona" });
         }
-    }
+    });
 
 }
