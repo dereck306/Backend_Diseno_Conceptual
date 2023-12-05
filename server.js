@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const connectDB = require('./db');
+const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
@@ -8,6 +9,7 @@ const PORT = 3000;
 // Conexión a MongoDB
 connectDB();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 const alumnosController = require('./controllers/AlumnosController.js');
