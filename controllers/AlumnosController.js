@@ -13,11 +13,9 @@ module.exports = function (app) {
         try {
             // Consulta la base de datos para obtener una lista de alumnos
             const alumnos = await Alumno.find();
-            console.log("prueba0")
             // Crea una instancia de la fábrica PersonaFactory
             const personaFactory = new PersonaAbstractFactory();
-            
-            console.log("prueba1");
+
             // Convierte los datos de alumnos en objetos Alumno utilizando la fábrica
             const alumnosObjetos = alumnos.map(alumno => personaFactory.crearAlumno(
                 alumno.cedula,
@@ -27,7 +25,7 @@ module.exports = function (app) {
                 alumno.fecha_de_nacimiento,
                 alumno.carrera
             ));
-            console.log("prueba2");
+
             // Envia la lista de alumnos como respuesta a la solicitud
             res.send(alumnosObjetos);
         } catch (err) {
