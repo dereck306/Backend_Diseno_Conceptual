@@ -11,7 +11,8 @@ connectDB();
 
 app.use(cors());
 app.use(bodyParser.json());
-
+const cicloController = require('./controllers/CicloController.js');
+cicloController(app);
 const alumnosController = require('./controllers/AlumnosController.js');
 alumnosController(app);
 const cursosController = require('./controllers/CursoController.js');
