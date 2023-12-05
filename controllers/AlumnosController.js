@@ -1,5 +1,5 @@
 const Alumno = require('../models/Alumno.js');
-
+const PersonaAbstractFactory = require('../models/Persona.js');
 
 module.exports = function (app) {
 
@@ -9,14 +9,15 @@ module.exports = function (app) {
  * @param {Object} req - El objeto de solicitud HTTP.
  * @param {Object} res - El objeto de respuesta HTTP.
  */
-    app.get('/alumnos', async (req, res) => {                                   //NO FUNCIONA
+    app.get('/alumnos', async (req, res) => {
         try {
             // Consulta la base de datos para obtener una lista de alumnos
             const alumnos = await Alumno.find();
-
+            console.log("prueba0")
             // Crea una instancia de la fábrica PersonaFactory
-            const personaFactory = new PersonaFactory();
-
+            const personaFactory = new PersonaAbstractFactory();
+            
+            console.log("prueba1");
             // Convierte los datos de alumnos en objetos Alumno utilizando la fábrica
             const alumnosObjetos = alumnos.map(alumno => personaFactory.crearAlumno(
                 alumno.cedula,
@@ -26,12 +27,13 @@ module.exports = function (app) {
                 alumno.fecha_de_nacimiento,
                 alumno.carrera
             ));
-
+            console.log("prueba2");
             // Envia la lista de alumnos como respuesta a la solicitud
             res.send(alumnosObjetos);
         } catch (err) {
             // En caso de error, responde con un código de estado HTTP 500 (Error interno del servidor)
             res.status(500).send(err);
+            console.log(err)
         }
     });
 
