@@ -3,7 +3,7 @@
 const Grupo = require("../models/Grupo.js");
 
 module.exports = function (app) {
-  //http://localhost:3000/grupo/profesor/:cedula/ciclo-activo/1 a la Programación
+  //http://localhost:3000/grupo/profesor/003-123456-0002C/ciclo-activo/2
   app.get(
     "/grupo/profesor/:cedulaProfesor/ciclo-activo/:cicloActivo",
     async (req, res) => {
